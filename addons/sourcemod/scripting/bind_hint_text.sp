@@ -1,3 +1,5 @@
+#pragma semicolon 1
+#pragma newdecls required
 
 public Plugin myinfo =
 {
