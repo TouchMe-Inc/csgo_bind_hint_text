@@ -45,7 +45,7 @@ public APLRes AskPluginLoad2(Handle hSelf, bool bLate, char[] sError, int iErrLe
 
 	CreateNative("BindHintText", Native_BindHintText);
 
-	RegPluginLibrary("bht");
+	RegPluginLibrary("bind_hint_text");
 
 	return APLRes_Success;
 }
