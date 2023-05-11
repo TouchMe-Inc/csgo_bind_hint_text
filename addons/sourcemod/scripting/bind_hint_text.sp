@@ -5,7 +5,7 @@ public Plugin myinfo =
 	author = "TouchMe",
 	description = "Allows you to fix the hint text for a certain time",
 	version = "build_0001",
-	url = "---"
+	url = "https://github.com/TouchMe-Inc/csgo_bind_hint_text"
 };
 
 
