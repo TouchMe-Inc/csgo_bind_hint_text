@@ -6,7 +6,7 @@ public Plugin myinfo =
 	name = "BindHintText",
 	author = "TouchMe",
 	description = "Allows you to fix the hint text for a certain time",
-	version = "build_0001",
+	version = "build_0002",
 	url = "https://github.com/TouchMe-Inc/csgo_bind_hint_text"
 };
 
@@ -84,7 +84,7 @@ public Action Timer_HintTick(Handle hTimer)
 
 	for (int iClient = 1; iClient <= MaxClients; iClient++)
 	{
-		if (!IsClientInGame(iClient)) {
+		if (!IsClientInGame(iClient) || IsFakeClient(iClient)) {
 			continue;
 		}
 
