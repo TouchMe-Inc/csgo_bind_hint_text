@@ -6,7 +6,7 @@ public Plugin myinfo =
 	name = "BindHintText",
 	author = "TouchMe",
 	description = "Allows you to fix the hint text for a certain time",
-	version = "build_0002",
+	version = "build_0003",
 	url = "https://github.com/TouchMe-Inc/csgo_bind_hint_text"
 };
 
@@ -116,7 +116,7 @@ public Action UserMessage_HintText(UserMsg msg_id, Protobuf pb, const int[] play
 
 	if (sBuffer[0] == '@')
 	{
-		if (fGameTime - g_tHintMessages[iClient].timeout > 0) {
+		if (fGameTime > g_tHintMessages[iClient].timeout) {
 			g_tHintMessages[iClient].message[0] = '\0';
 		}
 
@@ -130,4 +130,11 @@ public Action UserMessage_HintText(UserMsg msg_id, Protobuf pb, const int[] play
 	}
 
 	return Plugin_Continue;
+}
+
+public void OnClientDisconnect_Post(int iClient)
+{
+	g_tHintMessages[iClient].locked = 0.0;
+	g_tHintMessages[iClient].timeout = 0.0;
+	g_tHintMessages[iClient].message[0] = '\0';
 }
