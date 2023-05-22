@@ -6,13 +6,14 @@ public Plugin myinfo =
 	name = "BindHintText",
 	author = "TouchMe",
 	description = "Allows you to fix the hint text for a certain time",
-	version = "build_0003",
+	version = "build_0004",
 	url = "https://github.com/TouchMe-Inc/csgo_bind_hint_text"
 };
 
+#define MIN_DURATION_HINT_TEXT         0.5
+#define DEFAULT_DURATION_HINT_TEXT     4.0
 
-#define HINT_TEXT_SIZE 256
-#define HINT_TEXT_TIME 4.0
+#define HINT_TEXT_SIZE                 512
 
 
 enum struct HintInfo {
@@ -57,6 +58,10 @@ public int Native_BindHintText(Handle hPlugin, int iParams)
 	float fDuration = GetNativeCell(1);
 	float fGameTime = GetGameTime();
 
+	if (fDuration < MIN_DURATION_HINT_TEXT) {
+		fDuration = MIN_DURATION_HINT_TEXT;
+	}
+
 	g_tHintMessages[iClient].timeout = fDuration + fGameTime;
 
 	if (fGameTime < g_tHintMessages[iClient].locked) {
@@ -88,9 +93,7 @@ public Action Timer_HintTick(Handle hTimer)
 			continue;
 		}
 
-		if (g_tHintMessages[iClient].message[0] != '\0'
-		&& fGameTime > g_tHintMessages[iClient].locked)
-		{
+		if (g_tHintMessages[iClient].message[0] != '\0' && fGameTime > g_tHintMessages[iClient].locked) {
 			PrintHintText(iClient, "@");
 		}
 	}
@@ -104,8 +107,7 @@ public Action UserMessage_HintText(UserMsg msg_id, Protobuf pb, const int[] play
 		return Plugin_Continue;
 	}
 
-	char sBuffer[HINT_TEXT_SIZE];
-	PbReadString(pb, "text", sBuffer, sizeof(sBuffer));
+	char sBuffer[HINT_TEXT_SIZE]; PbReadString(pb, "text", sBuffer, sizeof(sBuffer));
 
 	if (sBuffer[0] == '\0' || sBuffer[0] == '#') {
 		return Plugin_Handled;
@@ -125,8 +127,8 @@ public Action UserMessage_HintText(UserMsg msg_id, Protobuf pb, const int[] play
 	}
 
 	else {
-		g_tHintMessages[iClient].locked = fGameTime + HINT_TEXT_TIME;
-		g_tHintMessages[iClient].timeout += HINT_TEXT_TIME;
+		g_tHintMessages[iClient].locked = fGameTime + DEFAULT_DURATION_HINT_TEXT;
+		g_tHintMessages[iClient].timeout += DEFAULT_DURATION_HINT_TEXT;
 	}
 
 	return Plugin_Continue;
